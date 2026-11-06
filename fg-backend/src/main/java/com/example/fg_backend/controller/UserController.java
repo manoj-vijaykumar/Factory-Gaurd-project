@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.fg_backend.dto.LoginRequest;
+import com.example.fg_backend.dto.LoginResponse;
 import com.example.fg_backend.dto.UserResponse;
 import com.example.fg_backend.entity.User;
 import com.example.fg_backend.service.UserService;
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public UserResponse LoginUser(@RequestBody LoginRequest request)
+    public LoginResponse LoginUser(@RequestBody LoginRequest request)
     {
         return userService.LoginUser(request);
     }

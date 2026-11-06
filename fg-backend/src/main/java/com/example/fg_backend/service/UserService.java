@@ -4,6 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.fg_backend.dto.LoginRequest;
+import com.example.fg_backend.dto.LoginResponse;
 import com.example.fg_backend.dto.UserResponse;
 import com.example.fg_backend.entity.User;
 import com.example.fg_backend.repository.UserRepository;
@@ -13,9 +14,11 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    private JwtService jwtService;
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService=jwtService;
     }
 
     public UserResponse registerUser(User user)
@@ -33,7 +36,7 @@ public class UserService {
     savedUser.getName(), savedUser.getEmail(),savedUser.getRole().name());
     }
 
-    public UserResponse LoginUser(LoginRequest request)
+    public LoginResponse LoginUser(LoginRequest request)
     {
         User user=userRepository.findByEmail(request.getEmail()).orElseThrow(()-> new RuntimeException("Error"));
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword()))
@@ -46,10 +49,14 @@ public class UserService {
             throw new RuntimeException("Account is inactive");
         }
 
-        return new UserResponse(user.getId(),
+        String token=jwtService.generateToken(user.getEmail());
+
+        return new LoginResponse
+        (user.getId(),
          user.getName(),
          user.getEmail(),
-         user.getRole().name());
+         user.getRole().name(),
+        token);
     }
     
     
