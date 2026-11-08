@@ -2,11 +2,18 @@ package com.example.fg_backend.config;
 
 import java.io.IOException;
 import java.rmi.ServerException;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpLogging;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.example.fg_backend.entity.User;
 import com.example.fg_backend.repository.UserRepository;
 import com.example.fg_backend.service.JwtService;
 
@@ -54,7 +61,24 @@ public class Jwtauthenticator extends OncePerRequestFilter {
             return ;
         }
 
-        // String email=jwtService.extractEmail(token);
+        String email=jwtService.extractEmail(token);
+
+        Optional<User> optional_user=userRepo.findByEmail(email);
+        if(optional_user.isPresent() && optional_user.get().isActive())
+        {
+            User user=optional_user.get();
+            UsernamePasswordAuthenticationToken auth= new UsernamePasswordAuthenticationToken(user.getEmail(), null,
+        List.of(
+            new SimpleGrantedAuthority("ROLE_"+user.getRole().name()
+        )
+    )
+    );
+
+    SecurityContextHolder.getContext().setAuthentication(auth);
+        }
+
+        filterChain.doFilter(request, response);
+        
     }
     
 }

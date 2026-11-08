@@ -40,5 +40,8 @@ public class UserController {
     {
         return userService.LoginUser(request);
     }
-    
+    @GetMapping("/profile")
+public String getProfile() {
+    return "JWT authentication successful! Welcome to FactoryGuard.";
+}
 }
