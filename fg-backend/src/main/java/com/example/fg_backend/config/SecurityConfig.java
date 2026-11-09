@@ -39,8 +39,12 @@ public class SecurityConfig {
                     "/api/users/login"
                 ).permitAll()
 
+                .requestMatchers("/api/manager/**").hasRole("MANAGER")
+                .requestMatchers("/api/qa/**").hasRole("QA")
+
                 .anyRequest().authenticated()
             )
+            
 
             // Register our JWT filter
             .addFilterBefore(
