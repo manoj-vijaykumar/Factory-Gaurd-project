@@ -1,5 +1,7 @@
 package com.example.fg_backend.service;
 
+// import org.hibernate.mapping.List;
+import java.util.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,12 @@ public class UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService=jwtService;
+    }
+
+    public List<User> getUsers()
+    {
+        // List<User> reg_users=
+        return userRepository.findAll();
     }
 
     public UserResponse registerUser(User user)
