@@ -43,8 +43,12 @@ public class UserService {
         existingUser.setRole(user.getRole());
         return userRepository.save(existingUser);
     }
-    
-    
+
+    public void deleteUser(Long Id)
+    {
+        User user= userRepository.findById(Id).orElseThrow(()->new RuntimeException());
+        userRepository.delete(user);
+    }
     
     
     public UserResponse registerUser(User user)

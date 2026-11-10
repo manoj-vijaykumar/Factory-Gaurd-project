@@ -2,6 +2,7 @@ package com.example.fg_backend.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -61,6 +62,13 @@ public class ManagerContoller {
         return new UpdateUserRequest(
             updated_user.getRole().name()
         );
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable Long id)
+    {
+        userService.deleteUser(id);
+        return "User Deleted Successfully";
     }
 
 }
