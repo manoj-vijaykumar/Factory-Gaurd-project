@@ -29,6 +29,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User getUserById(Long Id)
+    {
+        return userRepository.findById(Id).orElseThrow(()-> new RuntimeException());
+
+    }
     public UserResponse registerUser(User user)
     {
         if(userRepository.existsByEmail(user.getEmail()))

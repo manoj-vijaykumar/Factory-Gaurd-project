@@ -3,6 +3,7 @@ package com.example.fg_backend.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,5 +38,17 @@ public class ManagerContoller {
             a.getName(),
             a.getEmail(),a.getRole().name())).toList();
     }
-    
+
+    @GetMapping("/{id}")
+    public UserResponse getUserById(@PathVariable Long id)
+    {
+        User user = userService.getUserById(id);
+        return new UserResponse(
+            user.getId(),
+            user.getName(),
+            user.getEmail(),
+            user.getRole().name()
+        );
+    }
+
 }
