@@ -49,8 +49,15 @@ public class UserService {
         User user= userRepository.findById(Id).orElseThrow(()->new RuntimeException());
         userRepository.delete(user);
     }
+
+    public User deactivateUser(Long Id)
+    {
+        User user=userRepository.findById(Id).orElseThrow(()-> new RuntimeException());
+        user.setActive(false);
+        return userRepository.save(user);
+    }
     
-    
+
     public UserResponse registerUser(User user)
     {
         if(userRepository.existsByEmail(user.getEmail()))

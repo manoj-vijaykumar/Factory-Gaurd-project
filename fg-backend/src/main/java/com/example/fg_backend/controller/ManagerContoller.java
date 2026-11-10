@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,5 +71,13 @@ public class ManagerContoller {
         userService.deleteUser(id);
         return "User Deleted Successfully";
     }
+
+    @PatchMapping("/{id}/deactivate")
+    public String deactivateUser(@PathVariable Long id)
+    {
+        userService.deactivateUser(id);
+        return "User deactivated successfully";
+    }
+
 
 }
