@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.fg_backend.dto.UpdateUserRequest;
 import com.example.fg_backend.dto.UserResponse;
 import com.example.fg_backend.entity.User;
 import com.example.fg_backend.service.UserService;
@@ -48,6 +51,15 @@ public class ManagerContoller {
             user.getName(),
             user.getEmail(),
             user.getRole().name()
+        );
+    }
+
+    @PutMapping("/{id}/role")
+    public UpdateUserRequest updateUser(@PathVariable Long id,@RequestBody User user)
+    {
+        User updated_user=userService.updateUser(id, user);
+        return new UpdateUserRequest(
+            updated_user.getRole().name()
         );
     }
 
