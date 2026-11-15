@@ -57,6 +57,11 @@ public class UserService {
         return userRepository.save(user);
     }
     
+    public User activateUser(Long Id)
+    {
+        User user=userRepository.findById(Id).orElseThrow(()->new RuntimeException());
+        return userRepository.save(user);
+    }
 
     public UserResponse registerUser(User user)
     {

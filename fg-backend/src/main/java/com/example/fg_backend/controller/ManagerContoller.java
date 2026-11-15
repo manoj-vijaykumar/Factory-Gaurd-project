@@ -80,4 +80,12 @@ public class ManagerContoller {
     }
 
 
+    @PatchMapping("/{id}/activate")
+    public String activateUser(@PathVariable Long id)
+    {
+        userService.activateUser(id);
+            return "User activated";
+    }
+
+
 }
