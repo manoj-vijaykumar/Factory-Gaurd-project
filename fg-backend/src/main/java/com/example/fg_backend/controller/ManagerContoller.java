@@ -16,7 +16,6 @@ import com.example.fg_backend.dto.UserResponse;
 import com.example.fg_backend.entity.User;
 import com.example.fg_backend.service.UserService;
 
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController 
