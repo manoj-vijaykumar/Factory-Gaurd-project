@@ -33,6 +33,7 @@ public class ManagerContoller {
         return "Welcome to Manager Dashboard!";
     }
 
+    // Get all the users 
     @GetMapping("/users")
     public List<UserResponse> getUsers()
     {
@@ -43,6 +44,7 @@ public class ManagerContoller {
             a.getEmail(),a.getRole().name())).toList();
     }
 
+    // Get user by Id
     @GetMapping("/{id}")
     public UserResponse getUserById(@PathVariable Long id)
     {
@@ -55,10 +57,22 @@ public class ManagerContoller {
         );
     }
 
+    // Upadate the user name and email address
+    @PutMapping("/{id}/updatedetails")
+    public UserResponse updateUser(@PathVariable Long id, @RequestBody User user) {
+        User updated_user=userService.updateUser(id,user);
+        return new UserResponse(
+            updated_user.getId(),
+             updated_user.getName(),
+             updated_user.getEmail(),
+             updated_user.getRole().name());
+
+    }
+
     @PutMapping("/{id}/role")
-    public UpdateUserRequest updateUser(@PathVariable Long id,@RequestBody User user)
+    public UpdateUserRequest updateUserRole(@PathVariable Long id,@RequestBody User user)
     {
-        User updated_user=userService.updateUser(id, user);
+        User updated_user=userService.updateUserRole(id, user);
         return new UpdateUserRequest(
             updated_user.getRole().name()
         );

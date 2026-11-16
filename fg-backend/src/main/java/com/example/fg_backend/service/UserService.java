@@ -37,6 +37,16 @@ public class UserService {
 
     public User updateUser(Long Id,User user)
     {
+        User existingUser= userRepository.findById(Id).orElseThrow(()->new RuntimeException());
+        existingUser.setName(user.getName());
+        existingUser.setEmail(user.getEmail());
+        return userRepository.save(existingUser);
+    }
+
+    
+
+    public User updateUserRole(Long Id,User user)
+    {
         User existingUser= userRepository.findById(Id).orElseThrow(()-> new RuntimeException());
         // existingUser.setName(user.getName());
         // existingUser.setEmail(user.getEmail());
