@@ -1,5 +1,7 @@
 package com.example.fg_backend.controller;
 
+import com.example.fg_backend.repository.MachineRepository;
+import com.example.fg_backend.service.MachineService;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,20 +13,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.fg_backend.dto.StatusRequest;
 import com.example.fg_backend.dto.UpdateUserRequest;
 import com.example.fg_backend.dto.UserResponse;
+import com.example.fg_backend.entity.Machine;
 import com.example.fg_backend.entity.User;
 import com.example.fg_backend.service.UserService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
 
 
 
 @RestController 
 @RequestMapping("/api/manager")
 public class ManagerContoller {
+    // private final MachineService machineService_1;
+    private final MachineRepository machineRepo;
     private UserService userService;
+    private MachineService machineService;
     
-    public ManagerContoller(UserService userService) {
+    public ManagerContoller(UserService userService, MachineRepository machineRepo, MachineService machineService) {
         this.userService = userService;
+        this.machineRepo = machineRepo;
+        this.machineService=machineService;
     }
 
     @GetMapping("/dashboard")
@@ -99,6 +112,43 @@ public class ManagerContoller {
         userService.activateUser(id);
             return "User activated";
     }
+
+
+    @PostMapping("/machines")
+    public Machine addMachine(@RequestBody Machine machine) {
+
+        Machine added_machine= machineService.addMachine(machine);
+        return machineRepo.save(added_machine);        
+    }
+
+    @PutMapping("{id}/machines")
+    public Machine updateMachine(@PathVariable Long id, @RequestBody Machine machine)
+    {
+        Machine updated_machine=machineService.updateMachine(id, machine);
+        return machineRepo.save(updated_machine);
+    }
+
+    @PutMapping("{id}/status")
+    public StatusRequest updateStatus(@PathVariable Long id,@RequestBody Machine machine)
+    {
+        Machine updated_status=machineService.updateStatus(id,machine);
+        return new StatusRequest(updated_status.getStatus());
+    }
+
+    @GetMapping("/machines")
+    public List<Machine> getMachines()
+    {
+        return machineService.getMachines();
+    }
+
+    @DeleteMapping("/{id}/removeMachine")
+    public String deleteMachines(@PathVariable Long id)
+    {
+        machineService.deleteMachines(id);
+        return "Deleted successfully";
+    }
+    
+    
 
 
 }
